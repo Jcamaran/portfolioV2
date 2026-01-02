@@ -1,6 +1,5 @@
 import ParticlesBackground from "@/components/ParticlesBackground";
 import TypewriterEffect from "@/components/TypewriterEffect";
-import Image from "next/image";
 import { LuMessageCircleDashed } from "react-icons/lu";
 
 export default function HomePage() {
@@ -33,13 +32,10 @@ export default function HomePage() {
         {/* Right Side - Profile Picture */}
         <div className="shrink-0">
           <div className="relative w-80 h-80 rounded-full overflow-hidden border-4 border-purple-300 shadow-2xl shadow-blue-500/50">
-            <Image
-              src="/profile_pic.png"
-              alt="Joaquin Profile"
-              fill
-              sizes="320px"
-              className="object-cover"
-              priority
+            <img
+              src="/profile_pic_2.png"
+              alt="Joaquin Camaran"
+              className="object-cover w-full h-full"
             />
           </div>
         </div>
