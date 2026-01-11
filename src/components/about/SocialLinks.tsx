@@ -36,7 +36,7 @@ export default function SocialLinks() {
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-black/30 backdrop-blur-sm border border-white/20 rounded-lg p-3 group w-12 h-12 flex items-center justify-center border-b-purple-400 border-b-2 border-r-purple-400 border-r-2 hover:border-b-0 hover:border-r-0 transition-all duration-150 relative"
+            className="bg-black/30 backdrop-blur-sm border border-white/20 rounded-lg p-3 group w-16 h-12 flex items-center justify-center border-b-purple-400 border-b-2 border-r-purple-400 border-r-2 hover:border-b-0 hover:border-r-0 transition-all duration-50 relative"
             title={social.label}
           >
             <Icon className="text-white text-2xl group-hover:text-purple-400 transition-colors" />

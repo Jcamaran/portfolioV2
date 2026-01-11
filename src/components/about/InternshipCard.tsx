@@ -15,8 +15,8 @@ export default function InternshipCard() {
         <p className="text-white/80 text-sm">Recent Summer Internship</p>
         <p className="text-white font-bold text-md">Data Analytics Engineer Intern</p>
       </div>
-      <div className="h-32 w-full flex items-center justify-center">
-        <img src="/ASML-Symbol.png" alt="ASML Logo" className="h-28 w-56 object-contain rounded-xl" />
+      <div className="h-32 w-full flex items-center justify-center ">
+        <img src="/ASML-Symbol.png" alt="ASML Logo" className="h-28 w-56 object-cover-contain rounded-xl" />
       </div>
     </motion.div>
   );

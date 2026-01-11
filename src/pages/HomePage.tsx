@@ -1,11 +1,15 @@
 import ParticlesBackground from "@/components/ParticlesBackground";
 import TypewriterEffect from "@/components/TypewriterEffect";
 import { LuMessageCircleDashed } from "react-icons/lu";
+import { memo } from "react";
+
+
+const MemoizedParticles = memo(ParticlesBackground);
 
 export default function HomePage() {
   return (
     <div className="flex min-h-screen items-center justify-center font-sans px-8">
-      <ParticlesBackground />
+      <MemoizedParticles />
 
       <main className="flex w-full max-w-6xl items-center justify-between gap-16 relative z-10">
         {/* Left Side - Intro Text */}

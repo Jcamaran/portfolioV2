@@ -9,9 +9,10 @@ export default function Navbar() {
 
   const links = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About & Experience" },
+    { href: "/about", label: "About" },
+    { href: "/xp", label: " Professional XP" },
     { href: "/projects", label: "Projects" },
-    { href: "/contact", label: "Contact" },
+   
   ];
 
   return (
@@ -40,7 +41,7 @@ export default function Navbar() {
                   <motion.span
                     layoutId="bubble-tab"
                     transition={{ type: "spring", duration: 0.5 }}
-                    className="absolute inset-0 z-0 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-full"
+                    className="absolute inset-0 z-0 bg-linear-to-r from-violet-600 to-indigo-600 rounded-full"
                   />
                 )}
               </Link>

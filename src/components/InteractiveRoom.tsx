@@ -136,7 +136,7 @@ function InfoModal({ zone, onClose }: { zone: any; onClose: () => void }) {
         onClick={onClose}
       >
         <motion.div
-          className="bg-gradient-to-br from-slate-900/95 to-slate-800/95 border border-white/20 rounded-2xl p-8 max-w-2xl w-full shadow-2xl"
+          className="bg-linear-to-br from-slate-900/95 to-slate-800/95 border border-white/20 rounded-2xl p-8 max-w-2xl w-full shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex justify-between items-start mb-6">
@@ -197,7 +197,7 @@ export default function InteractiveRoom() {
   const selectedZoneData = zones.find(z => z.id === selectedZone);
 
   return (
-    <div className="relative w-full h-[600px] rounded-2xl overflow-hidden border border-white/20 bg-slate-900">
+    <div className="relative w-full h-[1000px] rounded-2xl overflow-hidden border border-white/20 bg-slate-900">
       {/* Instructions overlay */}
       <div className="absolute top-4 left-4 z-10 bg-black/70 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-xs">
         <p className="text-white text-sm font-medium mb-2">🎮 Interactive Room</p>
