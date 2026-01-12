@@ -148,6 +148,6 @@ export default function Logo3D({
 }
 
 // Preload models for better performance
-useGLTF.preload('/models/asml_3d_logo_3.glb');
+useGLTF.preload('/models/asml_3d_logo_3-v2.glb');
 useGLTF.preload('/models/shu_4.glb');
 useGLTF.preload('/models/sikorsky.glb');

@@ -43,8 +43,8 @@ function AnimatedLine() {
       description: "Building a retrieval-augmented generation (RAG) LLM web application that enables Sikorsky engineers to diagnose and resolve discrepancies more efficiently.",
       position: "2%", // Position along the line (first screen)
       hdrPath: "city",
-      modelPath: "/models/sikorsky.glb", // Add your 3D model path
-      modelScale: 1.25 // Custom scale for this logo
+      modelPath: "/models/sikorsky.glb",
+      modelScale: 1.25
     },
     {
       title: "Data Analytics Engineering Intern",
@@ -52,8 +52,8 @@ function AnimatedLine() {
       date: "May, 2025 - Aug, 2025",
       description: "Developed ML-driven predictive analytics and a Python + Streamlit app using Azure Databricks to optimize manufacturing workflows.",
       position: "18%", // Position along the line (first screen)
-      modelPath: "/models/asml_3d_logo_3.glb", // Add your 3D model path
-      modelScale: 2.1, // Custom scale for this logo
+      modelPath: "/models/asml_3d_logo_3-v2.glb",
+      modelScale: 2.1,
       hdrPath: "sunset"
     },
     {
@@ -61,8 +61,8 @@ function AnimatedLine() {
       date: "2022 - 2023",
       description: "Applied machine learning, statistical analysis, and web scraping to analyze weightlifting performance data, uncovering key indicators, and progression trends",
       position: "65%", // Second screen
-      modelPath: "/models/shu_4.glb", // Add your 3D model path
-      modelScale: 2.5, // Custom scale for this logo
+      modelPath: "/models/shu_4.glb",
+      modelScale: 2.5,
       hdrPath: "warehouse"
     },
     {
@@ -70,8 +70,8 @@ function AnimatedLine() {
       date: "2021 - 2022",
       description: "Built reusable Python-based ETL pipelines with SQL/MongoDB to automate Excel data ingestion and led a Monday.com implementation",
       position: "80%", // Second screen
-      modelPath: "/models/sikorsky.glb", // Add your 3D model path
-      modelScale:  1.25, // Custom scale for this logo
+      modelPath: "/models/sikorsky.glb",
+      modelScale: 1.25,
       hdrPath: "city"
     }
   ];
