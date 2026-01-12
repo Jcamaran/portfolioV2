@@ -44,7 +44,8 @@ function AnimatedLine() {
       position: "2%", // Position along the line (first screen)
       hdrPath: "city",
       modelPath: "/models/sikorsky.glb",
-      modelScale: 1.25
+      modelScale: 1.25,
+      hasModel: false // LFS file not available on Vercel
     },
     {
       title: "Data Analytics Engineering Intern",
@@ -63,7 +64,8 @@ function AnimatedLine() {
       position: "65%", // Second screen
       modelPath: "/models/shu_4.glb",
       modelScale: 2.5,
-      hdrPath: "warehouse"
+      hdrPath: "warehouse",
+      hasModel: false // LFS file not available on Vercel
     },
     {
       title: "Software Engineer Intern",
@@ -72,7 +74,8 @@ function AnimatedLine() {
       position: "80%", // Second screen
       modelPath: "/models/sikorsky.glb",
       modelScale: 1.25,
-      hdrPath: "city"
+      hdrPath: "city",
+      hasModel: false // LFS file not available on Vercel
     }
   ];
 
@@ -171,19 +174,21 @@ function AnimatedLine() {
               <div className="absolute inset-0 bg-linear-to-b from-transparent from-50% to-black/20 pointer-events-none" />
             </div>
             {/* 3D Logo positioned in top-right corner */}
-            <div className="flex items-center justify-center right-2 z-20 p-1 sm:p-1.5 md:p-0">
-              <Logo3D 
-                modelPath={exp.modelPath} 
-                width={logoDimensions.width} 
-                height={logoDimensions.height} 
-                modelScale={exp.modelScale * logoDimensions.scale}
-                isHovered={hoveredCardIndex === index}
-                hdrPath={exp.hdrPath}
-                dpr={viewportWidth < 640 ? [1, 1.5] : [1, 2]}
-                // pass the per-card mouse ref
-                mouseRef={mouseRefs[index] as any}
-              />
-            </div>
+            {exp.hasModel !== false && (
+              <div className="flex items-center justify-center right-2 z-20 p-1 sm:p-1.5 md:p-0">
+                <Logo3D 
+                  modelPath={exp.modelPath} 
+                  width={logoDimensions.width} 
+                  height={logoDimensions.height} 
+                  modelScale={exp.modelScale * logoDimensions.scale}
+                  isHovered={hoveredCardIndex === index}
+                  hdrPath={exp.hdrPath}
+                  dpr={viewportWidth < 640 ? [1, 1.5] : [1, 2]}
+                  // pass the per-card mouse ref
+                  mouseRef={mouseRefs[index] as any}
+                />
+              </div>
+            )}
             
             
             <div className="relative z-10 p-2 sm:p-3 md:p-4">
