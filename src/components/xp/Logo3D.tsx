@@ -127,8 +127,12 @@ export default function Logo3D({
         className="flex items-center justify-center w-full h-full"
       >
         <Suspense fallback={null}>
-          {/* Custom HDR Environment for realistic lighting and reflections */}
-          <Environment files={hdrPath} background={false} />
+          {/* Environment preset or custom HDR for realistic lighting and reflections */}
+          <Environment 
+            preset={hdrPath.startsWith('/') ? undefined : hdrPath as any}
+            files={hdrPath.startsWith('/') ? hdrPath : undefined}
+            background={false} 
+          />
           
           {/* Bright lighting */}
           <ambientLight intensity={0.3} />
@@ -144,7 +148,6 @@ export default function Logo3D({
 }
 
 // Preload models for better performance
-useGLTF.preload('/models/sega_logo.glb');
 useGLTF.preload('/models/asml_3d_logo_3.glb');
 useGLTF.preload('/models/shu_4.glb');
 useGLTF.preload('/models/sikorsky.glb');

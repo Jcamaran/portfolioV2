@@ -42,7 +42,7 @@ function AnimatedLine() {
       date: " August, 2025 - Present",
       description: "Building a retrieval-augmented generation (RAG) LLM web application that enables Sikorsky engineers to diagnose and resolve discrepancies more efficiently.",
       position: "2%", // Position along the line (first screen)
-      hdrPath: "/liquid_bg_asml.hdr",
+      hdrPath: "city",
       modelPath: "/models/sikorsky.glb", // Add your 3D model path
       modelScale: 1.25 // Custom scale for this logo
     },
@@ -53,7 +53,8 @@ function AnimatedLine() {
       description: "Developed ML-driven predictive analytics and a Python + Streamlit app using Azure Databricks to optimize manufacturing workflows.",
       position: "18%", // Position along the line (first screen)
       modelPath: "/models/asml_3d_logo_3.glb", // Add your 3D model path
-      modelScale: 2.1 // Custom scale for this logo
+      modelScale: 2.1, // Custom scale for this logo
+      hdrPath: "sunset"
     },
     {
       title: "Data Analyst Intern",
@@ -62,7 +63,7 @@ function AnimatedLine() {
       position: "65%", // Second screen
       modelPath: "/models/shu_4.glb", // Add your 3D model path
       modelScale: 2.5, // Custom scale for this logo
-      hdrPath: "/red_hdr.hdr"
+      hdrPath: "warehouse"
     },
     {
       title: "Software Engineer Intern",
@@ -70,7 +71,8 @@ function AnimatedLine() {
       description: "Built reusable Python-based ETL pipelines with SQL/MongoDB to automate Excel data ingestion and led a Monday.com implementation",
       position: "80%", // Second screen
       modelPath: "/models/sikorsky.glb", // Add your 3D model path
-      modelScale:  1.25 // Custom scale for this logo
+      modelScale:  1.25, // Custom scale for this logo
+      hdrPath: "city"
     }
   ];
 
