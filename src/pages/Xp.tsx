@@ -60,7 +60,7 @@ export default function ContactPage() {
             Professional Experience
           </h1>
           <p className="text-lg text-gray-300 mb-8 max-w-3xl mx-auto">
-            Here is a summary of my professional experience, highlighting my roles, responsibilities, and achievements in various positions.
+            Here are some of the places i worked at over the last few years. Hover over the cards for some fun! 
           </p>
         </section>
         

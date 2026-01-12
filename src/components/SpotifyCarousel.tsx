@@ -71,7 +71,7 @@ export default function SpotifyCarousel() {
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden rounded-3xl bg-gradient-to-br from-green-600 to-emerald-600 p-3 flex flex-col">
+    <div className="relative w-full h-full overflow-hidden rounded-3xl bg-linear-to-br from-green-600 to-emerald-600 p-3 flex flex-col">
       {/* Header */}
       {/* <div className="flex items-center gap-2 mb-4 z-10">
         <div>
@@ -124,7 +124,7 @@ export default function SpotifyCarousel() {
                   draggable={false}
                 />
                 {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
                 
                 {/* Artist Info */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 px-6">

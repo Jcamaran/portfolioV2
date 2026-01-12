@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, Center } from '@react-three/drei';
+import { useGLTF, Center, Environment } from '@react-three/drei';
 import { useRef, useState, useEffect, Suspense } from 'react';
 import * as THREE from 'three';
 
@@ -15,6 +15,23 @@ interface Model3DProps {
 function Model3D({ modelPath, mouseRef, scale }: Model3DProps) {
   const meshRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF(modelPath);
+
+  // Enable reflections on all meshes in the model
+  useEffect(() => {
+    scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        if (mesh.material) {
+          const material = mesh.material as THREE.MeshStandardMaterial;
+          // Enable environment mapping for reflections
+          material.envMapIntensity = 1.5;
+          material.metalness = 0.8;
+          material.roughness = 0.2;
+          material.needsUpdate = true;
+        }
+      }
+    });
+  }, [scene]);
 
   // Animate based on mouse position using unprojection
   useFrame(({ camera, clock }) => {
@@ -66,6 +83,8 @@ interface Logo3DProps {
   width?: number;
   height?: number;
   modelScale?: number;  // Scale of the 3D model itself
+  dpr?: [number, number]; // Device pixel ratio [min, max] for resolution quality
+  hdrPath?: string; // Path to HDR environment file
   isHovered?: boolean;  // Whether the parent card is being hovered
   mouseRef?: React.MutableRefObject<{ x: number; y: number }>; // Mouse coords from parent card
 }
@@ -75,6 +94,8 @@ export default function Logo3D({
   width = 150, 
   height = 100,
   modelScale = 1.5,
+  dpr = [1, 2],
+  hdrPath = "/liquid_bg_asml.hdr",
   isHovered = false,
   mouseRef: providedMouseRef
 }: Logo3DProps) {
@@ -101,16 +122,19 @@ export default function Logo3D({
     >
       <Canvas
         gl={{ antialias: true, alpha: true }}
-        dpr={[1, 2]}
-        camera={{ position: [0, 0, 5], fov: 50 }}
+        dpr={dpr}
+        camera={{ position: [0, 0, 8], fov: 50 }}
         className="flex items-center justify-center w-full h-full"
       >
         <Suspense fallback={null}>
-          <ambientLight intensity={1.5} />
-          <directionalLight position={[5, 5, 5]} intensity={1.5} />
-          <spotLight position={[0, 10, 10]} angle={0.45} penumbra={1} intensity={2} />
-          <pointLight position={[-10, -10, -10]} intensity={1.2} />
-          <pointLight position={[10, 10, 10]} intensity={4} color="#4D2FB2" />
+          {/* Custom HDR Environment for realistic lighting and reflections */}
+          <Environment files={hdrPath} background={false} />
+          
+          {/* Bright lighting */}
+          <ambientLight intensity={0.3} />
+          <spotLight position={[0, 10, 10]} angle={0.7} penumbra={0.5} intensity={50} castShadow />
+          <pointLight position={[0, 10, 10]} intensity={12} color="#ffffff" />
+          <pointLight position={[-10, -10, -10]} intensity={8} />
           
           <Model3D modelPath={modelPath} mouseRef={mouseRef} scale={modelScale} />
         </Suspense>
@@ -121,3 +145,6 @@ export default function Logo3D({
 
 // Preload models for better performance
 useGLTF.preload('/models/sega_logo.glb');
+useGLTF.preload('/models/asml_3d_logo_3.glb');
+useGLTF.preload('/models/shu_4.glb');
+useGLTF.preload('/models/sikorsky.glb');
