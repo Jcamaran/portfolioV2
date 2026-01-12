@@ -81,28 +81,24 @@ function AnimatedLine() {
   );
 
   return (
-    <div ref={containerRef} className="relative w-full " style={{ height: "200vh" }}>
+    <div ref={containerRef} className="relative w-full" style={{ height: "200vh" }}>
       {/* Vertical Line Container */}
-      <div className="sticky top-0 left-1/2 -translate-x-1/2 w-[3px] h-screen">
+      <div className="sticky top-0 left-1/2 -translate-x-1/2 w-0.75 h-screen">
         {/* Background line */}
         <div className="absolute top-0 left-0 w-full h-full rounded-full bg-slate-400/20 backdrop-blur-sm" />
         
         {/* Animated line (gradient) that grows with scroll */}
         <motion.div
-          className="absolute top-0 left-0 w-full rounded-full bg-gradient-to-b from-indigo-400 via-violet-400 to-fuchsia-500 shadow-[0_0_10px_#a78bfa,0_0_20px_#60a5fa]"
+          className="absolute top-0 left-0 w-full rounded-full bg-linear-to-b from-indigo-400 via-violet-400 to-fuchsia-500 shadow-[0_0_10px_#a78bfa,0_0_20px_#60a5fa]"
           style={{ height: lineHeight, borderRadius: 9999 }}
         />
       </div>
-
-      <div className ="flex flex-row">
-
-   
 
       {/* Date labels opposite the cards */}
       {experiences.map((exp, index) => (
         <div
           key={`date-${index}`}
-          className={`absolute  top-[20%] ${index % 2 === 0 ? 'right-[56%] ' : 'left-[56%]'} translate-y-[425%]`}
+          className={`absolute top-[20%] ${index % 2 === 0 ? 'right-[56%]' : 'left-[56%]'} translate-y-[425%]`}
           style={{ top: exp.position }}
         >
           <span className="px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-0.5 md:py-1 rounded-full text-[10px] sm:text-xs tracking-wide sm:tracking-widest uppercase bg-black/40 text-slate-200 border border-white/10 backdrop-blur-sm shadow h-full w-full flex items-center justify-center">
@@ -193,13 +189,8 @@ function AnimatedLine() {
               <p className="text-xs sm:text-xs md:text-sm text-gray-200 group-hover:ml-1 transition-all ease-in-out duration-300 line-clamp-3">{exp.description}</p>
             </div>
           </div>
-          
-          {/* Connecting dot on the line */}
-          
-         
         </motion.div>
       ))}
-    </div>
     </div>
   );
 }
