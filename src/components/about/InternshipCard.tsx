@@ -16,7 +16,7 @@ export default function InternshipCard() {
         <p className="text-blue-700 font-bold text-sm lg:text-md group-hover:ml-2  transition-all ease-in-out duration-300 whitespace-nowrap ">Data Analytics Engineer Intern</p>
       </div>
       <div className="h-24 lg:h-32 w-full flex items-center justify-center ">
-        <img src="/ASML_Holding_transparent.svg" alt="ASML Logo" className="h-28 w-52 object-cover-contain rounded-xl" />
+        <Image src="/ASML_Holding_transparent.svg" alt="ASML Logo" className="h-28 w-52 object-cover-contain rounded-xl" width={208} height={112} />
       </div>
     </motion.div>
   );

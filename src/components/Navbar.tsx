@@ -47,7 +47,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-            className="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors relative z-50"
+            className="md:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors relative z-50 cursor-pointer"
             aria-label="Toggle mobile menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,7 +88,7 @@ const DropDownMenu = ({ pathname, isOpen, onClose }: DropDownMenuProps) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/20 backdrop-blur-sm md:hidden"
+            className="fixed inset-0  backdrop-blur-sm md:hidden"
             onClick={onClose}
             style={{ top: '64px' }}
           />

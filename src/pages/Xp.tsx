@@ -3,7 +3,13 @@
 import ParticlesBackground from "@/components/ParticlesBackground";
 import { useState, memo, useRef } from "react";   
 import { useScroll, useMotionValueEvent } from "framer-motion";
-import AnimatedLine from "@/components/xp/AnimatedLine";
+// import AnimatedLineStarter from "@/components/xp/AnimatedLineStarter";
+
+
+// Other versions available:
+import AnimatedLine from "@/components/xp/AnimatedLine";  // Original 2D flexbox
+// import AnimatedLine3D from "@/components/xp/AnimatedLine3D";  // 3D stacked animation
+// import AnimatedLineCarousel from "@/components/xp/AnimatedLineCarousel";  // 3D rotating carousel
 
 
 const MemoizedParticles = memo(ParticlesBackground);
@@ -56,24 +62,19 @@ export default function ContactPage() {
     <div className="min-h-screen font-sans flex flex-col">
       <MemoizedParticles />
       {/* Experience section */}
-      <main className="relative z-10 w-full mx-auto px-8 pt-16 flex-1 flex flex-col">
-        <section className="pt-16 text-center shrink-0"> 
+      <main className="relative z-10 w-full mx-auto flex-1 flex flex-col">
+        <section className="pt-24 pb-4 text-center shrink-0 px-8"> 
           <h3 className="text-3xl font-bold text-white mb-4">
-            My Journey Over The Last few years
+            Professional Experience
           </h3>
-          <p className="text-lg text-gray-300 mb-8 w-fullmx-auto">
-            Hover over the cards for some fun! 
+          <p className="text-lg text-gray-200">
+            Here are some of the roles I&apos;ve held over the last few years, hover over the cards for some fun!
           </p>
         </section>
         
-        <div ref={sectionRef} className="flex items-center justify-center w-full">
+        <div ref={sectionRef} className="h-screen w-full flex flex-1 items-center justify-center overflow-">
           <AnimatedLine />
         </div>
-        
-        {/* Moon Image at Bottom - Clipped */}
-        <section className="relative w-full h-0  mt-0">
-          
-        </section>
       </main>
     </div>
   );

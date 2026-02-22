@@ -21,7 +21,7 @@ export default function BioCard() {
             advancements in AI and implementing them into projects.
           </p>
           <p className={`text-gray-300 text-xs  md:text-xs lg:text-sm lgiteading-relaxed `}>
-            When I'm not coding, you'll find me playing sports, reading sci-fi novels, riding my motorcycle, or all of
+            When I&apos;m not coding, you&apos;ll find me playing sports, reading sci-fi novels, riding my motorcycle, or all of
             which done while listening to some good music.
           </p>
         </div>
