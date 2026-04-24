@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useRef, useState, useMemo, useEffect } from 'react';
-import { ReactFlow, Background, BackgroundVariant } from '@xyflow/react';
+import { ReactFlow, Background, BackgroundVariant, ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import Logo3D from './Logo3D';
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -27,51 +27,51 @@ interface Experience {
 
 const experiences: Experience[] = [
   {
-    title: "Software Engineer Capstone",
-    date: " August, 2025 - Present",
-    description: "Building a retrieval-augmented generation (RAG) LLM web application that enables Sikorsky engineers to diagnose and resolve discrepancies more efficiently.",
-    position: "10%", // Position along horizontal line
-    verticalPosition: "8%", // Position for vertical layout
+    title: "Software Engineer",
+    date: "August, 2025 - Present",
+    description: "Architecting the Smart Corrective Action Assistant (SCAA), a production-ready RAG pipeline using FastAPI and pgvector. This system leverages locally-hosted LLMs to help Sikorsky engineers instantly diagnose and resolve complex aircraft discrepancies.",
+    position: "10%",
+    verticalPosition: "8%",
     modelPath: "/models/sikorsky.glb",
     modelScale: 1,
-    modelOffset: { x: 0, y: -0 }, // Offset to center Sikorsky model
-    baseColor: "#3b82f6", // metallic blue
+    modelOffset: { x: 0, y: -0 },
+    baseColor: "#3b82f6",
     skyColor: "#bcdcff"
   },
   {
-    title: "Data Analytics Engineer Intern",
+    title: "Data Analytics Engineer",
     company: "ASML",
     date: "May, 2025 - Aug, 2025",
-    description: "Developed ML-driven predictive analytics and a Python + Streamlit app using Azure Databricks to optimize manufacturing workflows.",
-    position: "35%", // Position along horizontal line
+    description: "Engineered an NLP classification pipeline in Spark to process 5,000+ operator entries, predicting root cause codes with high accuracy. Deployed a Python and Streamlit interface on Azure Databricks to provide real-time predictive insights for manufacturing workflows.",
+    position: "35%",
     verticalPosition: "35%",
     modelPath: "/models/asml_3d_logo_3-v2.glb",
     modelScale: 1.6,
-    baseColor: "#3b82f6", // metallic blue
+    baseColor: "#3b82f6",
     skyColor: "#bcdcff"
   },
   {
-    title: "Data Analyst Intern",
+    title: "Data Analyst",
     date: "May, 2024 - Aug, 2024",
-    description: "Applied machine learning, statistical analysis, and web scraping to analyze weightlifting performance data, uncovering key indicators, and progression trends",
-    position: "60%", // Position along horizontal line
+    description: "Developed custom web scrapers and machine learning models to analyze athletic performance data. Identified key performance indicators (KPIs) and progression trends through rigorous statistical analysis to optimize training outcomes.",
+    position: "60%",
     verticalPosition: "60%",
     modelPath: "/models/shu_4.glb",
     modelScale: 2,
     modelOffset: { x: 0, y: -10 },
-    baseColor: "#d32f2f", // metallic red
+    baseColor: "#d32f2f",
     skyColor: "#ffd1d1"
   },
   {
-    title: "Software Engineer Intern",
+    title: "Software Engineer",
     date: "May, 2023 - Aug, 2023",
-    description: "Built reusable Python-based ETL pipelines with SQL/MongoDB to automate Excel data ingestion and led a Monday.com implementation",
-    position: "85%", // Position along horizontal line
+    description: "Automated legacy data migration at the Sikorsky Historical Archives by building Python-based ETL pipelines. Developed scripts to map complex Excel datasets to Monday.com via REST API, streamlining digital record management.",
+    position: "85%",
     verticalPosition: "85%",
     modelPath: "/models/sikorsky.glb",
     modelScale: 1,
     modelOffset: { x: 0, y: -10 }, 
-    baseColor: "#3b82f6", // metallic blue
+    baseColor: "#3b82f6",
     skyColor: "#bcdcff"
   }
 ];
@@ -79,6 +79,7 @@ const experiences: Experience[] = [
 function AnimatedLine() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+  const [expandedCardIndex, setExpandedCardIndex] = useState<number | null>(null);
   const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
   useEffect(() => {
@@ -139,7 +140,7 @@ function AnimatedLine() {
         {/* Timeline section - Flex layout for cards */}
         <div className={`relative w-full ${isMobile ? 'flex flex-col' : 'flex flex-row'}`}>
 
-        <div ref={containerRef} className={`relative w-full flex ${isMobile ? 'flex-col gap-6 py-4' : 'flex-row flex-wrap justify-center gap-6 lg:gap-8 py-8'}`}>
+        <div ref={containerRef} className={`relative w-full flex ${isMobile ? 'flex-col gap-6 py-8' : 'flex-row flex-wrap justify-center gap-6 lg:gap-8 py-8'}`}>
 
       {/* Experience Cards */}
       {experiences.map((exp, index) => (
@@ -156,7 +157,7 @@ function AnimatedLine() {
           
           {/* Cards */}
           <motion.div
-            className="flex flex-col overflow-hidden border border-white/50 sm:border-white/60 rounded-lg shadow-lg shadow-blue-500/20 bg-linear-to-b from-[#8F87F1] to-90% to-blue-400/20 md:hover:border-purple-400/60 md:hover:shadow-sm md:hover:shadow-purple-500/40 transition-all group cursor-pointer pointer-events-auto w-full h-64"
+            className="flex flex-col overflow-hidden border border-white/50 sm:border-white/60 rounded-lg shadow-lg shadow-blue-500/20  md:hover:border-purple-200/60 md:hover:shadow-sm md:hover:shadow-purple-500/40 group cursor-pointer pointer-events-auto w-full h-64"
                 style={{ 
                   boxShadow: '0 0 20px rgba(96, 165, 250, 0.3), 0 0 40px rgba(139, 92, 246, 0.2)',
                   transformOrigin: 'center center'
@@ -164,7 +165,21 @@ function AnimatedLine() {
                 initial={{ opacity: 0, filter: 'blur(2px)' }}
                 whileInView={{ opacity: 1, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.3 }}
+                animate={{
+                  scale: expandedCardIndex === index ? 1.02 : 1,
+                  background: expandedCardIndex === index 
+                    ? 'linear-gradient(to bottom, #31315a 0%, #31315a 90%, rgba(59, 130, 246, 0.5) 100%)'
+                    : 'linear-gradient(to bottom, #8F87F1 0%, #8F87F1 90%, rgba(96, 165, 250, 0.2) 100%)',
+                }}
+                transition={{ 
+                  duration: 0.7, 
+                  ease: [0.34, 1.56, 0.64, 1],
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 15
+                }}
 
+                onClick={() => setExpandedCardIndex(expandedCardIndex === index ? null : index)}
                 onMouseEnter={() => setHoveredCardIndex(index)}
                 onMouseLeave={() => setHoveredCardIndex(null)}
                 onMouseMove={(e) => {
@@ -182,26 +197,28 @@ function AnimatedLine() {
               >
                 <div className="relative inset-0 bg-linear-to-b from-white/5 from-40% to-black/60 backdrop-blur-sm rounded-lg border border-white/20 h-full w-full">
                   <div className="absolute top-0 left-0 right-0 inset-0 z-0 w-full h-full">
-                    <ReactFlow 
-                      nodes={[]} 
-                      edges={[]} 
-                      fitView={false} 
-                      panOnDrag={false} 
-                      zoomOnScroll={false} 
-                      zoomOnPinch={false} 
-                      zoomOnDoubleClick={false}
-                      nodesDraggable={false}
-                      nodesConnectable={false}
-                      elementsSelectable={false}
-                      proOptions={{ hideAttribution: true }}
-                    >
-                      <Background 
-                        variant={BackgroundVariant.Lines} 
-                        gap={20} 
-                        size={0.5} 
-                        color="rgba(132, 140, 207, 1)" 
-                      />
-                    </ReactFlow>
+                    <ReactFlowProvider>
+                      <ReactFlow 
+                        nodes={[]} 
+                        edges={[]} 
+                        fitView={false} 
+                        panOnDrag={false} 
+                        zoomOnScroll={false} 
+                        zoomOnPinch={false} 
+                        zoomOnDoubleClick={false}
+                        nodesDraggable={false}
+                        nodesConnectable={false}
+                        elementsSelectable={false}
+                        proOptions={{ hideAttribution: true }}
+                      >
+                        <Background 
+                          variant={BackgroundVariant.Lines} 
+                          gap={20} 
+                          size={0.5} 
+                          color="rgba(132, 140, 207, 1)" 
+                        />
+                      </ReactFlow>
+                    </ReactFlowProvider>
                     <div className="absolute inset-0 bg-linear-to-b from-transparent from-50% to-black/20 pointer-events-none" />
                   
                     {/* Neon glow layers emanating from logo */}
@@ -238,10 +255,28 @@ function AnimatedLine() {
                   </div>
                   
                   <div className="relative flex flex-col items-center justify-start h-50 w-full z-20 p-2 sm:p-3">
+                    {/* Logo - animate to background when expanded */}
                     <motion.div 
-                      className="shrink-0" 
+                      key={`logo-${index}-${logoDimensions.width}`}
+                      className="shrink-0 absolute left-1/2 top-0 -translate-x-1/2"
                       style={{ 
-                        transform: exp.modelOffset ? `translate(${exp.modelOffset.x}px, ${exp.modelOffset.y}px)` : undefined 
+                        ...(exp.modelOffset && {
+                          marginLeft: `${exp.modelOffset.x}px`,
+                          marginTop: `${exp.modelOffset.y}px`
+                        })
+                      }}
+                      animate={{
+                        scale: expandedCardIndex === index ? 0.35 : 1,
+                        opacity: expandedCardIndex === index ? 0.12 : 1,
+                        y: expandedCardIndex === index ? 40 : 0,
+                        filter: expandedCardIndex === index ? 'blur(4px)' : 'blur(0px)',
+                      }}
+                      transition={{ 
+                        duration: 0.8, 
+                        ease: [0.34, 1.56, 0.64, 1],
+                        type: "spring",
+                        stiffness: 80,
+                        damping: 12
                       }}
                     >
                       <Logo3D 
@@ -259,12 +294,83 @@ function AnimatedLine() {
                       />
                     </motion.div>
                     
-                    <div 
-                      className="flex flex-col shrink-0 px-2 sm:px-4 mt-2 sm:mt-3"
+                    {/* Text - animate to center/top when expanded */}
+                    <motion.div 
+                      key={`text-${index}-${logoDimensions.width}`}
+                      className="flex flex-col shrink-0 px-2 sm:px-4"
+                      animate={{
+                        y: expandedCardIndex === index ? 10 : logoDimensions.height + 0,
+                        scale: expandedCardIndex === index ? 1 : 1,
+                      }}
+                      transition={{ 
+                        duration: 0.8, 
+                        ease: [0.34, 1.56, 0.64, 1],
+                        type: "spring",
+                        stiffness: 80,
+                        damping: 12,
+                        delay: expandedCardIndex === index ? 0.1 : 0
+                      }}
                     >
-                      <h3 className="text-md sm:text-base lg:text-lg font-bold text-white mb-1 sm:mb-2">{exp.title}</h3>
-                      <p className="text-sm sm:text-sm text-gray-200 line-clamp-3">{exp.description}</p>
-                    </div>
+                      <motion.h3 
+                        className="text-md sm:text-base lg:text-lg font-bold text-white mb-1 sm:mb-2"
+                        animate={{
+                          scale: expandedCardIndex === index ? 1 : 1,
+                        }}
+                        transition={{ 
+                          duration: 0.6, 
+                          ease: [0.34, 1.56, 0.64, 1],
+                          delay: 0.15
+                        }}
+                      >
+                        {exp.title}
+                      </motion.h3>
+                      <motion.p 
+                        className={`text-sm sm:text-sm text-white ${expandedCardIndex === index ? 'line-clamp-6' : 'line-clamp-4'}`}
+                        animate={{
+                          opacity: expandedCardIndex === index ? 1 : 0.95,
+                        }}
+                        transition={{ 
+                          duration: 0.5,
+                          delay: 0.2
+                        }}
+                      >
+                        {exp.description}
+                      </motion.p>
+                    </motion.div>
+                    
+                    {/* Internship Tag - bottom left */}
+                    <motion.div
+                      className="absolute -bottom-9 left-7 px-4 py-1.5 rounded-full bg-purple-400/70 backdrop-blur-sm border border-white/10 shadow-xl"
+                      initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                      animate={{
+                        opacity: expandedCardIndex === index ? 1 : 0,
+                        y: expandedCardIndex === index ? 0 : 10,
+                        scale: expandedCardIndex === index ? 1 : 0.8,
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        delay: expandedCardIndex === index ? 0.4 : 0,
+                        ease: [0.34, 1.56, 0.64, 1],
+                      }}
+                      style={{ pointerEvents: 'none' }}
+                    >
+                      <span className="text-xs font-semibold text-gray-200 tracking-wide uppercase flex items-center gap-1.5">
+                        <svg 
+                          className="w-3 h-3" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
+                          <path 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            strokeWidth={2} 
+                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" 
+                          />
+                        </svg>
+                        Internship
+                      </span>
+                    </motion.div>
                   </div>
                 </div>
               </motion.div>
