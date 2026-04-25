@@ -357,11 +357,11 @@ export default function CodeWindowEffect(props: CodeWindowEffectProps) {
               )}
               
               {/* ASCII output */}
-              {displayedTexts[0] && (
-                <pre className="text-emerald-400 w-full px-0 leading-tight transition-all ease-in-out duration-100 text-[2.5px] sm:text-[4px] md:text-[6px] lg:text-[8px]">
+              <div className="w-full overflow-hidden">
+                <pre className="text-emerald-400 px-0 leading-tight transition-all ease-in-out duration-100 text-[3px] sm:text-[6px] md:text-[7px] lg:text-[8px] origin-top-left" style={{ transform: 'scale(0.8)' }}>
                   {displayedTexts[0]}
                 </pre>
-              )}
+              </div>
               
              {/* Instructions that appear after ASCII */}
               {showInstructions && (
