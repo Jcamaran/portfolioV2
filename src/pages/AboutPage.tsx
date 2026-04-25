@@ -30,7 +30,7 @@ export default function AboutPage() {
           className="mb-[clamp(1.25rem,3vw,1.75rem)] pt-[clamp(1rem,6vw,4rem)]  sm:flex flex-col w-full max-w-6xl mx-auto px-4 text-center"
         >
           <h1 className="text-[clamp(2rem,3vw,3rem)] font-bold text-white mb-[clamp(0.5rem,1svw,0.5rem)]">About Me</h1>
-          <p className="text-gray-400 text-[clamp(0.875rem,1.5vw,1.125rem)]">Get to know me through these glimpses of my life</p>
+          <p className="text-gray-300 text-[clamp(0.875rem,1.5vw,1.125rem)]">Get to know me through these glimpses of my life</p>
         </motion.div>
        
 
