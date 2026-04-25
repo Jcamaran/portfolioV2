@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion';
 import { useRef, useState, useMemo, useEffect } from 'react';
 import { ReactFlow, Background, BackgroundVariant, ReactFlowProvider } from '@xyflow/react';
-// @ts-expect-error - CSS import
 import '@xyflow/react/dist/style.css';
 import Logo3D from './Logo3D';
 import { Canvas, useFrame } from '@react-three/fiber';
