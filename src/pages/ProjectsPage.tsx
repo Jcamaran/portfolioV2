@@ -11,7 +11,7 @@ export default function ProjectsPage() {
       id: 1,
       title: "SCAA Capstone Project",
       description: "A full-stack RAG + LMM application created for Sikorsky Aircrafts engineers to understand technical documents and obtain actionable steps towards solving their problems.",
-      image: "/scaa.png",
+      image: "/SCAA_2.png",
       tech: ["LLM", "RAG","Python", "PostgreSQL", "TypeScript", "Docker", "Tailwind CSS", "FastAPI", ],
       demo: "https://www.youtube.com/watch?v=yPvSNN3zqzA"
     },
