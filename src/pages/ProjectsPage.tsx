@@ -30,7 +30,8 @@ export default function ProjectsPage() {
       description: "ColorPoet is an interactive web app that transforms hand-tracked color selections into AI-generated poetry using Google Gemini. Select colors through your webcam's hand tracking, and watch as the AI crafts personalized poems inspired by your chosen palette—or explore daily poems from classic poets.",
       image: "/color_poet.png",
       tech: ["LLM","Typescript", "MediaPipe", "Tailwind CSS"],
-      demo: "https://www.youtube.com/watch?v=yPvSNN3zqzA"
+      demo: "https://color-poet.vercel.app/",
+      github: "https://github.com/Jcamaran/Color_Poet"
     },
     {     
       id: 4,
