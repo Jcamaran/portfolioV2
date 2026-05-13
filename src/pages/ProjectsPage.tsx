@@ -15,6 +15,7 @@ export default function ProjectsPage() {
       tech: ["LLM", "RAG","Python", "PostgreSQL", "TypeScript", "Docker", "Tailwind CSS", "FastAPI", ],
       demo: "https://www.youtube.com/watch?v=yPvSNN3zqzA"
     },
+    
     {
       id: 2,
       title: "RCC Predicitons Using NLP",
@@ -23,8 +24,16 @@ export default function ProjectsPage() {
       tech: ["Azure Databricks", "Python", "Spark", "MLflow", "Scikit-learn", "Streamlit", "CSS"],
       website: ""
     },
-    {     
+    {
       id: 3,
+      title: "ColorPoet",
+      description: "ColorPoet is an interactive web app that transforms hand-tracked color selections into AI-generated poetry using Google Gemini. Select colors through your webcam's hand tracking, and watch as the AI crafts personalized poems inspired by your chosen palette—or explore daily poems from classic poets.",
+      image: "/color_poet.png",
+      tech: ["LLM","Typescript", "MediaPipe", "Tailwind CSS"],
+      demo: "https://www.youtube.com/watch?v=yPvSNN3zqzA"
+    },
+    {     
+      id: 4,
       title: "First Portfolio Project",
       description: "Just my first attempt at creating a portfolio website to showcase my projects and skills. I created this with Vite and deployed it using GitHub Pages.",
       image: "/first_portfolio.png",
@@ -33,7 +42,7 @@ export default function ProjectsPage() {
       demo: "https://jcamaran.github.io/joaquin-portfolio/"
     },
     {
-      id: 4,
+      id: 5,
       title: "Ring Facial Recognition",
       description: "A facial recognition system using Python and OpenCV to identify individuals in real-time video streams from Ring cameras and unlock doors automatically.",
       image: "/ring.png",
@@ -42,7 +51,7 @@ export default function ProjectsPage() {
     },
     
     {     
-      id: 5,
+      id: 6,
       title: "Success Predictability Using ML",
       description: "Developed an XGBoost model to predict weightlifting competition success with up to 89% accuracy, trained on 14,000+ athletes across 12 years including 2024 Olympic data. The model helps coaches optimize load-selection strategies by analyzing athlete demographics, weight class, and historical performance.",
       image: "/weightlifting.png",
