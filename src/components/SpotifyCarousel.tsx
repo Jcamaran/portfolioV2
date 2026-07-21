@@ -18,7 +18,7 @@ export default function SpotifyCarousel() {
   // Mock data - replace with your actual Spotify API data
   const artists: Artist[] = [
     { name: "The Marias", image: "https://i8.amplience.net/i/naras/the_marias_band_bethany_vargas", genre: "Psychedelic Rock" },
-    { name: "Jenevieve", image: "https://pbs.twimg.com/profile_images/1949583986709389312/7uj86Z3g_400x400.jpg", genre: "R&B" },
+    { name: "Jenevieve", image: "https://api.sniffers.co.nz/wp-content/uploads/2021/09/jenevieves-debut-division-introduces-her-as-a-new-voice-of-r-and-b-1-1160x967.jpeg", genre: "R&B" },
     { name: "Giveon", image: "https://www.giveonofficial.com/dist/img/covers/blvd.png", genre: "R&B" },
     { name: "Drake", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgaa_YjSjoCEjmUemm1A_tdbl3WDsKH_lthQ&s", genre: "Hip Hop" },
   ];

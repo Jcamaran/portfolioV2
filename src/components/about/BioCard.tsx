@@ -14,21 +14,30 @@ export default function BioCard() {
       <div className="flex flex-col h-full justify-between">
         <div>
           <h2 className="text-2xl lg:text-3xl font-bold text-white mb-3 lg:mb-4">Hey there!</h2>
-          <p className="text-gray-300  text-xs  sm:text-xs lg:text-sm leading-relaxed mb-3 lg:mb-4">
-            My name is <span className="font-semibold text-white">Joaquin Camaran</span>, a developer and student at{" "}
-            <span className="font-semibold text-red-300">Sacred Heart University</span>. I have a passion for tech and
-            data whether it's building websites, conducting data-driven research and analysis, or exploring the latest
-            advancements in AI and implementing them into projects.
-          </p>
-          <p className={`text-gray-300 text-xs  md:text-xs lg:text-sm lgiteading-relaxed `}>
-            When I&apos;m not coding, you&apos;ll find me playing sports, reading sci-fi novels, riding my motorcycle, or all of
-            which done while listening to some good music.
-          </p>
+          <div className="flex gap-4 items-start">
+            <div className="flex-1">
+              <p className="text-gray-300 line-clamp-5 text-xs  sm:text-xs lg:text-sm leading-relaxed mb-3 lg:mb-4">
+                My name is <span className="font-semibold text-white">Joaquin Camaran</span>, a developer and student at{" "}
+                <span className="font-semibold text-red-300">Sacred Heart University</span>. I have a passion for tech and
+                data whether it&apos;s building websites, conducting data-driven research and analysis, or exploring the latest
+                advancements in AI and implementing them into projects.
+              </p>
+              <p className={`text-gray-300 line-clamp-5 text-xs  md:text-xs lg:text-sm leading-relaxed hidden md:block`}>
+                When I&apos;m not coding, you&apos;ll find me playing sports, reading sci-fi novels, riding my motorcycle, or all of
+                which done while listening to some good <span className="font-semibold text-emerald-300/90">music</span>.
+              </p>
+            </div>
+            <div className="md:hidden">
+              <SocialLinks />
+            </div>
+          </div>
         </div>
 
-        <SocialLinks />
+        <div className="hidden md:block">
+          <SocialLinks />
+        </div>
 
-        <div className="flex items-center gap-2 mt-4">
+        <div className="hidden md:flex items-center gap-2 mt-4">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
           <span className="text-gray-400 text-sm">Available for opportunities</span>
         </div>
