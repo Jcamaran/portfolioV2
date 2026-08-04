@@ -110,7 +110,7 @@ export default function SpotifyCarousel() {
             {/* Artist Card */}
             <div className="relative h-full  flex items-center justify-center flex-col">
               {/* Album/Artist Image */}
-              <div className="relative aspect-video h-31.25  w-52  sm:w-52 md:w-36 lg:w-52  overflow-hidden rounded-2xl  shadow-2xl bg-transparent">
+              <div className="relative aspect-video h-auto max-h-full w-full max-w-52 md:max-w-36 lg:max-w-44 lg:tall:max-w-52 overflow-hidden rounded-2xl shadow-2xl bg-transparent">
                 <Image
                   src={artists[currentIndex].image}
                   alt={artists[currentIndex].name}

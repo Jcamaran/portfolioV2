@@ -27,7 +27,7 @@ export default function AboutPage() {
          <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-[clamp(1.25rem,3vw,1.75rem)] pt-[clamp(1rem,6vw,4rem)]  sm:flex flex-col w-full max-w-6xl mx-auto px-4 text-center"
+          className="mb-[clamp(0.75rem,2vh,1.75rem)] pt-[clamp(1rem,6vw,4rem)] md:pt-[clamp(0.5rem,4vh,3rem)] sm:flex flex-col w-full max-w-6xl mx-auto px-4 text-center"
         >
           <h1 className="text-[clamp(2rem,3vw,3rem)] font-bold text-white mb-[clamp(0.5rem,1svw,0.5rem)]">About Me</h1>
           <p className="text-gray-300 text-[clamp(0.875rem,1.5vw,1.125rem)]">Get to know me through these glimpses of my life</p>
@@ -35,7 +35,7 @@ export default function AboutPage() {
        
 
         {/* Bento Grid */}
-        <div className="w-full sm:pt-20 md:pt-0 max-w-6xl lg:max-h-4xl grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-[clamp(0.75rem,2vw,1rem)] items-stretch mx-auto" style={{ gridAutoRows: 'clamp(180px, 20vh, 180px)' }}>
+        <div className="w-full sm:pt-20 md:pt-0 max-w-6xl grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-[clamp(0.5rem,1.5vh,1rem)] items-stretch mx-auto auto-rows-[180px] md:auto-rows-[clamp(130px,19vh,180px)]">
           
           <ProfileCard />
           <BioCard />
