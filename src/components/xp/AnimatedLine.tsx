@@ -29,7 +29,7 @@ const experiences: Experience[] = [
   {
     title: "Software Engineer",
     date: "August, 2025 - Present",
-    description: "Architecting the Smart Corrective Action Assistant (SCAA), a production-ready RAG pipeline using FastAPI and pgvector. This system leverages locally-hosted LLMs to help Sikorsky engineers instantly diagnose and resolve complex aircraft discrepancies.",
+    description: "Architecting the Smart Corrective Action Assistant (SCAA), a production-ready RAG pipeline using FastAPI, pgvector, and locally-hosted LLMs to help Sikorsky engineers instantly diagnose complex aircraft discrepancies.",
     position: "10%",
     verticalPosition: "8%",
     modelPath: "/models/sikorsky.glb",
@@ -42,7 +42,7 @@ const experiences: Experience[] = [
     title: "Data Analytics Engineer",
     company: "ASML",
     date: "May, 2025 - Aug, 2025",
-    description: "Engineered an NLP classification pipeline in Spark to process 5,000+ operator entries, predicting root cause codes with high accuracy. Deployed a Python and Streamlit interface on Azure Databricks to provide real-time predictive insights for manufacturing workflows.",
+    description: "Engineered an NLP classification pipeline in Spark to predict root cause codes across 5,000+ operator entries, deploying a Streamlit interface on Azure Databricks for real-time manufacturing insights.",
     position: "35%",
     verticalPosition: "35%",
     modelPath: "/models/asml_3d_logo_3-v2.glb",
@@ -53,7 +53,7 @@ const experiences: Experience[] = [
   {
     title: "Data Analyst",
     date: "May, 2024 - Aug, 2024",
-    description: "Developed custom web scrapers and machine learning models to analyze athletic performance data. Identified key performance indicators (KPIs) and progression trends through rigorous statistical analysis to optimize training outcomes.",
+    description: "Developed custom web scrapers and machine learning models to analyze athletic performance data, identifying key performance indicators and progression trends to optimize training outcomes.",
     position: "60%",
     verticalPosition: "60%",
     modelPath: "/models/shu_4.glb",
@@ -65,7 +65,7 @@ const experiences: Experience[] = [
   {
     title: "Software Engineer",
     date: "May, 2023 - Aug, 2023",
-    description: "Automated legacy data migration at the Sikorsky Historical Archives by building Python-based ETL pipelines. Developed scripts to map complex Excel datasets to Monday.com via REST API, streamlining digital record management.",
+    description: "Automated legacy data migration at the Sikorsky Historical Archives with Python ETL pipelines, mapping complex Excel datasets to Monday.com via REST API to streamline record management.",
     position: "85%",
     verticalPosition: "85%",
     modelPath: "/models/sikorsky.glb",
@@ -258,14 +258,18 @@ function AnimatedLine() {
                     {/* Logo - animate to background when expanded */}
                     <motion.div 
                       key={`logo-${index}-${logoDimensions.width}`}
-                      className="shrink-0 absolute left-1/2 top-0 -translate-x-1/2"
+                      className="shrink-0 absolute left-1/2 top-0"
                       style={{ 
+                        x: "-50%",
+                        transformOrigin: "top center",
                         ...(exp.modelOffset && {
                           marginLeft: `${exp.modelOffset.x}px`,
                           marginTop: `${exp.modelOffset.y}px`
                         })
                       }}
+                      initial={false}
                       animate={{
+                        x: "-50%",
                         scale: expandedCardIndex === index ? 0.35 : 1,
                         opacity: expandedCardIndex === index ? 0.12 : 1,
                         y: expandedCardIndex === index ? 40 : 0,
@@ -312,7 +316,7 @@ function AnimatedLine() {
                       }}
                     >
                       <motion.h3 
-                        className="text-md sm:text-base lg:text-lg font-bold text-white mb-1 sm:mb-2"
+                        className="text-md sm:text-base lg:text-lg font-bold text-white mb-1 sm:mb-2 whitespace-nowrap"
                         animate={{
                           scale: expandedCardIndex === index ? 1 : 1,
                         }}
