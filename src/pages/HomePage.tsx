@@ -22,9 +22,7 @@ export default function HomePage() {
           font="3d"/>
 
       </main>
-      <div className="absolute bottom-8 right-8 z-10  shadow-lg shadow-blue-500/20 hover:scale-110 transition-transform">
-        <LuMessageCircleDashed className="w-4 h-4 text-blue-400 animate-pulse cursor-pointer scale-200  transition-transform" />
-      </div>
+      
     </div>
   );
 }
