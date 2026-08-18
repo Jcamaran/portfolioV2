@@ -14,7 +14,7 @@ const socialLinks = [
     label: "LinkedIn",
   },
   {
-    href: "https://docs.google.com/document/d/1OnvOUFneBRnWsy7EFjFmNyP4QOeFgQMWGE4IFktqYn0/edit?usp=sharing",
+    href: "https://docs.google.com/document/d/1L1dAS9MGIaFz49GbANovmaPnUDYTZEW7SF06BNDxCmk/edit?usp=sharing",
     icon: HiDocumentText,
     label: "Resume",
   },
