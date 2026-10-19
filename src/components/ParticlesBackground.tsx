@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
-import type { Container, Engine } from "@tsparticles/engine";
+import type { Engine } from "@tsparticles/engine";
 
 export default function ParticlesBackground() {
   const [init, setInit] = useState(false);
@@ -16,10 +16,6 @@ export default function ParticlesBackground() {
     });
   }, []);
 
-  const particlesLoaded = async (container?: Container): Promise<void> => {
-    console.log(container);
-  };
-
   if (!init) return null;
 
   return (
@@ -31,13 +27,17 @@ export default function ParticlesBackground() {
           left: 0,
           width: "100%",
           height: "100%",
-          background: "#2B2A4C",
+          background: [
+            "radial-gradient(ellipse 80% 60% at 50% -10%, rgb(139 122 224 / 0.35), transparent 60%)",
+            "radial-gradient(ellipse 60% 50% at 100% 100%, rgb(119 190 240 / 0.14), transparent 60%)",
+            "radial-gradient(ellipse 50% 40% at 0% 80%, rgb(226 187 233 / 0.10), transparent 60%)",
+            "linear-gradient(180deg, var(--night) 0%, var(--night-deep) 100%)",
+          ].join(", "),
           zIndex: -2,
         }}
       />
       <Particles
         id="tsparticles"
-        particlesLoaded={particlesLoaded}
         options={{
           background: {
             color: {
@@ -47,19 +47,19 @@ export default function ParticlesBackground() {
         fpsLimit: 120,
         particles: {
           number: {
-            value: 150,
+            value: 120,
             density: {
               enable: true,
             },
           },
           color: {
-            value: ["#780C28", "#EAFAEA", "#CAE0BC", "#6E8E59"],
+            value: ["#FFFFFF", "#E2BBE9", "#B9AEF0", "#77BEF0"],
           },
           shape: {
             type: "circle",
           },
           opacity: {
-            value: { min: 0.1, max: 1 },
+            value: { min: 0.1, max: 0.8 },
             animation: {
               enable: true,
               speed: 3,
@@ -71,7 +71,7 @@ export default function ParticlesBackground() {
           },
           move: {
             enable: true,
-            speed: 3,
+            speed: 1.2,
             direction: "top",
             random: true,
             straight: false,

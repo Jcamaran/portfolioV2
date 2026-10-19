@@ -1,9 +1,7 @@
 "use client";
 
-import { motion } from 'framer-motion';
-import { useRef, useState, useMemo, useEffect } from 'react';
-import { ReactFlow, Background, BackgroundVariant, ReactFlowProvider } from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
+import { motion, MotionConfig } from 'framer-motion';
+import { useRef, useState, useMemo, useEffect, Suspense } from 'react';
 import Logo3D from './Logo3D';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
@@ -13,7 +11,8 @@ import * as THREE from 'three';
 
 interface Experience {
   title: string;
-  company?: string;
+  company: string;
+  type: "Full-time" | "Capstone" | "Internship";
   date: string;
   description: string;
   position: string;
@@ -27,11 +26,26 @@ interface Experience {
 
 const experiences: Experience[] = [
   {
-    title: "Software Engineer",
-    date: "August, 2025 - Present",
-    description: "Architecting the Smart Corrective Action Assistant (SCAA), a production-ready RAG pipeline using FastAPI, pgvector, and locally-hosted LLMs to help Sikorsky engineers instantly diagnose complex aircraft discrepancies.",
+    title: "Full Stack Engineer",
+    company: "PetVet Care Centers",
+    type: "Full-time",
+    date: "Sept, 2026 - Present",
+    description: "Designing, building, and maintaining full-stack web applications for PetVet Care Centers' network of veterinary hospitals, from responsive front-end interfaces to scalable APIs and databases.",
     position: "10%",
     verticalPosition: "8%",
+    modelPath: "/models/petvet_full.glb",
+    modelScale: 1.6,
+    baseColor: "#3b82f6",
+    skyColor: "#bcdcff"
+  },
+  {
+    title: "Software Engineer",
+    company: "Sikorsky",
+    type: "Capstone",
+    date: "Aug, 2025 - Sept, 2026",
+    description: "Architecting the Smart Corrective Action Assistant (SCAA), a production-ready RAG pipeline using FastAPI, pgvector, and locally-hosted LLMs to help Sikorsky engineers instantly diagnose complex aircraft discrepancies.",
+    position: "35%",
+    verticalPosition: "35%",
     modelPath: "/models/sikorsky.glb",
     modelScale: 1,
     modelOffset: { x: 0, y: -0 },
@@ -41,10 +55,11 @@ const experiences: Experience[] = [
   {
     title: "Data Analytics Engineer",
     company: "ASML",
+    type: "Internship",
     date: "May, 2025 - Aug, 2025",
     description: "Engineered an NLP classification pipeline in Spark to predict root cause codes across 5,000+ operator entries, deploying a Streamlit interface on Azure Databricks for real-time manufacturing insights.",
-    position: "35%",
-    verticalPosition: "35%",
+    position: "60%",
+    verticalPosition: "60%",
     modelPath: "/models/asml_3d_logo_3-v2.glb",
     modelScale: 1.6,
     baseColor: "#3b82f6",
@@ -52,27 +67,17 @@ const experiences: Experience[] = [
   },
   {
     title: "Data Analyst",
+    company: "Sacred Heart University",
+    type: "Internship",
     date: "May, 2024 - Aug, 2024",
     description: "Developed custom web scrapers and machine learning models to analyze athletic performance data, identifying key performance indicators and progression trends to optimize training outcomes.",
-    position: "60%",
-    verticalPosition: "60%",
+    position: "85%",
+    verticalPosition: "85%",
     modelPath: "/models/shu_4.glb",
     modelScale: 2,
     modelOffset: { x: 0, y: -10 },
     baseColor: "#d32f2f",
     skyColor: "#ffd1d1"
-  },
-  {
-    title: "Software Engineer",
-    date: "May, 2023 - Aug, 2023",
-    description: "Automated legacy data migration at the Sikorsky Historical Archives with Python ETL pipelines, mapping complex Excel datasets to Monday.com via REST API to streamline record management.",
-    position: "85%",
-    verticalPosition: "85%",
-    modelPath: "/models/sikorsky.glb",
-    modelScale: 1,
-    modelOffset: { x: 0, y: -10 }, 
-    baseColor: "#3b82f6",
-    skyColor: "#bcdcff"
   }
 ];
 
@@ -80,10 +85,12 @@ function AnimatedLine() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
   const [expandedCardIndex, setExpandedCardIndex] = useState<number | null>(null);
-  const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  // Start from the server-rendered width and measure after mount, so hydration matches
+  const [viewportWidth, setViewportWidth] = useState(1024);
 
   useEffect(() => {
     const handleResize = () => setViewportWidth(window.innerWidth);
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -132,54 +139,82 @@ function AnimatedLine() {
           distance={20}
         />
         <directionalLight position={[0, 10, 5]} intensity={3} color="#ffffff" />
-        <SpinningHologram />
+        <Suspense fallback={null}>
+          <SpinningHologram />
+        </Suspense>
       </Canvas>
 
       {/* Cards Container */}
+      <MotionConfig reducedMotion="user">
       <div className="relative w-full flex flex-col max-w-7xl mx-20 items-center justify-center -translate-y-10 z-10 pt-20 sm:pt-0">
         {/* Timeline section - Flex layout for cards */}
         <div className={`relative w-full ${isMobile ? 'flex flex-col' : 'flex flex-row'}`}>
 
         <div ref={containerRef} className={`relative w-full flex ${isMobile ? 'flex-col gap-6 py-8' : 'flex-row flex-wrap justify-center gap-6 lg:gap-8 py-8'}`}>
 
+      {/* Timeline rail linking the date chips (single-row desktop layout only) */}
+      <motion.div
+        aria-hidden
+        className="hidden lg:block absolute left-[12.5%] right-[12.5%] top-[2.875rem] h-px origin-left pointer-events-none bg-linear-to-r from-emerald-300/60 via-lilac/40 to-sky-brand/10"
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      />
+
       {/* Experience Cards */}
-      {experiences.map((exp, index) => (
-        <div
-          key={index}
+      {experiences.map((exp, index) => {
+        const isExpanded = expandedCardIndex === index;
+        const isCurrent = exp.date.includes('Present');
+        const toggle = () => setExpandedCardIndex(isExpanded ? null : index);
+
+        return (
+        <motion.div
+          key={`${exp.company}-${exp.date}`}
           className={`flex flex-col items-center overflow-visible ${isMobile ? 'w-full' : 'w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1.5rem)]'} pointer-events-none`}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: index * 0.1 }}
         >
           {/* Date label */}
-          <div className="mb-3 pointer-events-none">
-            <span className="px-3 py-1.5 rounded-full text-xs tracking-widest uppercase bg-black/40 text-slate-200 border border-white/10 backdrop-blur-sm shadow flex items-center justify-center whitespace-nowrap">
+          <div className="relative mb-3 pointer-events-none">
+            <span className={`px-3 py-1.5 rounded-full font-mono text-[11px] tracking-wider uppercase border backdrop-blur-sm flex items-center justify-center gap-2 whitespace-nowrap ${isCurrent ? 'bg-emerald-400/10 text-emerald-100 border-emerald-300/40' : 'bg-night-deep/80 text-white/70 border-white/10'}`}>
+              {isCurrent && <span aria-hidden className="w-1.5 h-1.5 rounded-full bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.9)]" />}
               {exp.date}
             </span>
           </div>
           
           {/* Cards */}
           <motion.div
-            className="flex flex-col overflow-hidden border border-white/50 sm:border-white/60 rounded-lg shadow-lg shadow-blue-500/20  md:hover:border-purple-200/60 md:hover:shadow-sm md:hover:shadow-purple-500/40 group cursor-pointer pointer-events-auto w-full h-64"
+            role="button"
+            tabIndex={0}
+            aria-expanded={isExpanded}
+            className="flex flex-col overflow-hidden border border-white/10 rounded-2xl md:hover:border-lilac/50 transition-colors group cursor-pointer pointer-events-auto w-full h-64 focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-4 focus-visible:outline-emerald-300"
                 style={{ 
-                  boxShadow: '0 0 20px rgba(96, 165, 250, 0.3), 0 0 40px rgba(139, 92, 246, 0.2)',
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 48px -24px rgba(0, 0, 0, 0.7), 0 0 36px -10px rgba(139, 122, 224, 0.45)',
                   transformOrigin: 'center center'
                 }}
-                initial={{ opacity: 0, filter: 'blur(2px)' }}
-                whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-                viewport={{ once: true, amount: 0.3 }}
                 animate={{
-                  scale: expandedCardIndex === index ? 1.02 : 1,
-                  background: expandedCardIndex === index 
-                    ? 'linear-gradient(to bottom, #31315a 0%, #31315a 90%, rgba(59, 130, 246, 0.5) 100%)'
-                    : 'linear-gradient(to bottom, #8F87F1 0%, #8F87F1 90%, rgba(96, 165, 250, 0.2) 100%)',
+                  scale: isExpanded ? 1.02 : 1,
+                  background: isExpanded
+                    ? 'linear-gradient(to bottom, rgba(43, 42, 76, 0.95) 0%, rgba(30, 29, 56, 0.95) 55%, rgba(23, 22, 44, 0.95) 100%)'
+                    : 'linear-gradient(to bottom, rgba(168, 156, 240, 0.62) 0%, rgba(52, 50, 92, 0.9) 50%, rgba(23, 22, 44, 0.94) 100%)',
                 }}
+                whileHover={isMobile ? undefined : { y: -4 }}
                 transition={{ 
-                  duration: 0.7, 
-                  ease: [0.34, 1.56, 0.64, 1],
                   type: "spring",
-                  stiffness: 100,
-                  damping: 15
+                  stiffness: 220,
+                  damping: 26
                 }}
 
-                onClick={() => setExpandedCardIndex(expandedCardIndex === index ? null : index)}
+                onClick={toggle}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle();
+                  }
+                }}
                 onMouseEnter={() => setHoveredCardIndex(index)}
                 onMouseLeave={() => setHoveredCardIndex(null)}
                 onMouseMove={(e) => {
@@ -195,30 +230,18 @@ function AnimatedLine() {
                   mouseRefs[index].current = { x: 0, y: 0 };
                 }}
               >
-                <div className="relative inset-0 bg-linear-to-b from-white/5 from-40% to-black/60 backdrop-blur-sm rounded-lg border border-white/20 h-full w-full">
+                <div className="relative inset-0 bg-linear-to-b from-white/[0.04] from-40% to-transparent backdrop-blur-md rounded-[inherit] h-full w-full">
                   <div className="absolute top-0 left-0 right-0 inset-0 z-0 w-full h-full">
-                    <ReactFlowProvider>
-                      <ReactFlow 
-                        nodes={[]} 
-                        edges={[]} 
-                        fitView={false} 
-                        panOnDrag={false} 
-                        zoomOnScroll={false} 
-                        zoomOnPinch={false} 
-                        zoomOnDoubleClick={false}
-                        nodesDraggable={false}
-                        nodesConnectable={false}
-                        elementsSelectable={false}
-                        proOptions={{ hideAttribution: true }}
-                      >
-                        <Background 
-                          variant={BackgroundVariant.Lines} 
-                          gap={20} 
-                          size={0.5} 
-                          color="rgba(132, 140, 207, 1)" 
-                        />
-                      </ReactFlow>
-                    </ReactFlowProvider>
+                    {/* Blueprint grid */}
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        backgroundImage: 'linear-gradient(to right, rgba(226, 187, 233, 0.09) 1px, transparent 1px), linear-gradient(to bottom, rgba(226, 187, 233, 0.09) 1px, transparent 1px)',
+                        backgroundSize: '20px 20px',
+                        maskImage: 'radial-gradient(ellipse 90% 70% at 50% 25%, black 30%, transparent 100%)',
+                        WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 50% 25%, black 30%, transparent 100%)',
+                      }}
+                    />
                     <div className="absolute inset-0 bg-linear-to-b from-transparent from-50% to-black/20 pointer-events-none" />
                   
                     {/* Neon glow layers emanating from logo */}
@@ -227,13 +250,14 @@ function AnimatedLine() {
                       <div 
                         className="absolute inset-0 "
                         style={{
-                          background: `radial-gradient(circle at center, 
-                            rgba(205, 209, 228) 15%, 
-                            rgba(139, 92, 246, 0.4) 15%, 
-                            transparent 40%)`,
-                          filter: 'blur(15px)',
+                          background: `radial-gradient(ellipse 60% 30% at 50% 18%,
+                            rgba(236, 232, 255, 0.85) 0%,
+                            rgba(139, 122, 224, 0.35) 45%,
+                            transparent 100%)`,
+                          filter: 'blur(12px)',
                           mixBlendMode: 'screen',
-                          opacity: 0.3
+                          opacity: isExpanded ? 0.15 : 0.75,
+                          transition: 'opacity 400ms ease'
                         }}
                       />
                       
@@ -241,11 +265,10 @@ function AnimatedLine() {
                       <div 
                         className="absolute inset-0"
                         style={{
-                          background: `radial-gradient(ellipse at center, 
-                            rgba(45, 85, 255, 0.3) 0%, 
-                            rgba(43, 44, 170, 0.1) 40%, 
+                          background: `radial-gradient(ellipse at center,
+                            rgba(119, 190, 240, 0.25) 0%,
+                            rgba(139, 122, 224, 0.1) 40%,
                             transparent 90%)`,
-                          filter: 'blur(0px)',
                           mixBlendMode: 'screen',
                           opacity: 0.2
                         }}
@@ -270,17 +293,15 @@ function AnimatedLine() {
                       initial={false}
                       animate={{
                         x: "-50%",
-                        scale: expandedCardIndex === index ? 0.35 : 1,
-                        opacity: expandedCardIndex === index ? 0.12 : 1,
-                        y: expandedCardIndex === index ? 40 : 0,
-                        filter: expandedCardIndex === index ? 'blur(4px)' : 'blur(0px)',
+                        scale: isExpanded ? 0.35 : 1,
+                        opacity: isExpanded ? 0.12 : 1,
+                        y: isExpanded ? 40 : 0,
+                        filter: isExpanded ? 'blur(4px)' : 'blur(0px)',
                       }}
                       transition={{ 
-                        duration: 0.8, 
-                        ease: [0.34, 1.56, 0.64, 1],
                         type: "spring",
-                        stiffness: 80,
-                        damping: 12
+                        stiffness: 180,
+                        damping: 24
                       }}
                     >
                       <Logo3D 
@@ -294,76 +315,57 @@ function AnimatedLine() {
                         skyColor={exp.skyColor}
                         dpr={viewportWidth < 640 ? [1, 1.5] : [1, 2]}
                         mouseRef={mouseRefs[index]}
-                        
                       />
                     </motion.div>
                     
                     {/* Text - animate to center/top when expanded */}
                     <motion.div 
                       key={`text-${index}-${logoDimensions.width}`}
-                      className="flex flex-col shrink-0 px-2 sm:px-4"
+                      className="flex flex-col shrink-0 w-full px-2 sm:px-4"
                       animate={{
-                        y: expandedCardIndex === index ? 10 : logoDimensions.height + 0,
-                        scale: expandedCardIndex === index ? 1 : 1,
+                        y: isExpanded ? 10 : logoDimensions.height,
                       }}
                       transition={{ 
-                        duration: 0.8, 
-                        ease: [0.34, 1.56, 0.64, 1],
                         type: "spring",
-                        stiffness: 80,
-                        damping: 12,
-                        delay: expandedCardIndex === index ? 0.1 : 0
+                        stiffness: 180,
+                        damping: 24,
+                        delay: isExpanded ? 0.1 : 0
                       }}
                     >
-                      <motion.h3 
-                        className="text-md sm:text-base lg:text-lg font-bold text-white mb-1 sm:mb-2 whitespace-nowrap"
-                        animate={{
-                          scale: expandedCardIndex === index ? 1 : 1,
-                        }}
-                        transition={{ 
-                          duration: 0.6, 
-                          ease: [0.34, 1.56, 0.64, 1],
-                          delay: 0.15
-                        }}
-                      >
+                      <h3 className="text-base lg:text-lg font-semibold tracking-tight text-white leading-tight whitespace-nowrap">
                         {exp.title}
-                      </motion.h3>
-                      <motion.p 
-                        className={`text-sm sm:text-sm text-white ${expandedCardIndex === index ? 'line-clamp-6' : 'line-clamp-4'}`}
-                        animate={{
-                          opacity: expandedCardIndex === index ? 1 : 0.95,
-                        }}
-                        transition={{ 
-                          duration: 0.5,
-                          delay: 0.2
-                        }}
-                      >
+                      </h3>
+                      <p className="font-mono text-[11px] uppercase tracking-wider text-lilac/80 mt-0.5 mb-1.5 sm:mb-2">
+                        {exp.company}
+                      </p>
+                      <p className={`text-sm leading-relaxed text-white/70 ${isExpanded ? 'line-clamp-6' : 'line-clamp-3'}`}>
                         {exp.description}
-                      </motion.p>
+                      </p>
                     </motion.div>
                     
-                    {/* Internship Tag - bottom left */}
+                    {/* Employment type tag - bottom left */}
                     <motion.div
-                      className="absolute -bottom-9 left-7 px-4 py-1.5 rounded-full bg-purple-400/70 backdrop-blur-sm border border-white/10 shadow-xl"
+                      className={`absolute -bottom-9 left-7 px-4 py-1.5 rounded-full backdrop-blur-sm border border-white/10 shadow-xl ${exp.type === 'Full-time' ? 'bg-emerald-500/70' : 'bg-violet-brand/70'}`}
                       initial={{ opacity: 0, y: 10, scale: 0.8 }}
                       animate={{
-                        opacity: expandedCardIndex === index ? 1 : 0,
-                        y: expandedCardIndex === index ? 0 : 10,
-                        scale: expandedCardIndex === index ? 1 : 0.8,
+                        opacity: isExpanded ? 1 : 0,
+                        y: isExpanded ? 0 : 10,
+                        scale: isExpanded ? 1 : 0.8,
                       }}
                       transition={{
-                        duration: 0.5,
-                        delay: expandedCardIndex === index ? 0.4 : 0,
-                        ease: [0.34, 1.56, 0.64, 1],
+                        duration: 0.4,
+                        delay: isExpanded ? 0.3 : 0,
+                        ease: [0.22, 1, 0.36, 1],
                       }}
                       style={{ pointerEvents: 'none' }}
                     >
-                      <span className="text-xs font-semibold text-gray-200 tracking-wide uppercase flex items-center gap-1.5">
+                      <span className="text-xs font-semibold text-white tracking-wide uppercase flex items-center gap-1.5">
                         <svg 
                           className="w-3 h-3" 
                           fill="none" 
                           stroke="currentColor" 
                           viewBox="0 0 24 24"
+                          aria-hidden
                         >
                           <path 
                             strokeLinecap="round" 
@@ -372,18 +374,28 @@ function AnimatedLine() {
                             d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" 
                           />
                         </svg>
-                        Internship
+                        {exp.type}
                       </span>
                     </motion.div>
                   </div>
+
+                  {/* Expand affordance - bottom right */}
+                  <span className="absolute bottom-2.5 right-3 z-20 flex items-center gap-1 font-mono text-[11px] uppercase tracking-wider text-white/50 group-hover:text-lilac transition-colors duration-200 pointer-events-none">
+                    {isExpanded ? 'Less' : 'More'}
+                    <svg className={`w-3 h-3 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </span>
                 </div>
               </motion.div>
-        </div>
-      ))}
+        </motion.div>
+        );
+      })}
 
         </div>
       </div>
       </div>
+      </MotionConfig>
     </>
   );
 }
@@ -394,28 +406,40 @@ export default AnimatedLine;
 
 
 // Spinning Hologram Globe Component
+const GLOBE_SCALE = 3;
+
+// Per-bone motion (rad/s), with spin rates measured from the model's 12 s clip.
+// The clip doesn't end where it starts, so looping it snapped every ring back to
+// its first pose; driving the motion from elapsed time keeps it seamless.
+type Axis = [number, number, number];
+const BONE_MOTION: Record<string, { spin: Axis; rate: number; precess?: Axis; precessRate?: number }> = {
+  Planet: { spin: [0, 1, 0], rate: 0.22 },
+  Clouds: { spin: [0, 1, 0], rate: 0.45, precess: [1, 0, 0], precessRate: 0.08 },
+  Ring1: { spin: [1, 0, 0], rate: 0.2, precess: [0, 1, 0], precessRate: 0.06 },
+  Ring2: { spin: [1, 0, 0], rate: 0.42, precess: [0, 1, 0], precessRate: -0.08 },
+  Ring3: { spin: [1, 0, 0], rate: 0.22, precess: [0, 0, 1], precessRate: 0.1 },
+  Ring4: { spin: [1, 0, 0], rate: 0.37, precess: [0, 1, 0], precessRate: -0.05 },
+  Ring5: { spin: [1, 0, 0], rate: 0.28, precess: [0, 0, 1], precessRate: -0.07 },
+  Ring6: { spin: [1, 0, 0], rate: 0.45, precess: [0, 1, 0], precessRate: 0.09 },
+};
+const tmpQuat = new THREE.Quaternion();
+
 function SpinningHologram() {
   const groupRef = useRef<THREE.Group>(null);
   const gltf = useGLTF('/models/animated_hologram_planet_earth_sci_fi_3d_model/HologramEarthAnimated/HologramEarthAnimated.glb');
   
   // Apply colors to different parts of the globe
   useEffect(() => {
-    console.log('🎨 Applying colors to globe parts...');
-    
     gltf.scene.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
-        console.log('Found mesh:', mesh.name || 'unnamed');
-        
         // Get the material(s)
         const materials = Array.isArray(mesh.material) 
           ? mesh.material 
           : [mesh.material];
         
-        materials.forEach((mat, index) => {
+        materials.forEach((mat) => {
           if (mat instanceof THREE.MeshStandardMaterial) {
-            console.log(`  Material ${index}:`, mat.name);
-            
             // Example: Color different parts based on name or index
             // You can customize these colors for different meshes
             
@@ -457,20 +481,45 @@ function SpinningHologram() {
     });
   }, [gltf]);
   
-  // Simple rotation in useFrame
+  // Bones the clip animates, starting from the clip's first pose
+  const bones = useMemo(
+    () => (gltf.animations[0]?.tracks ?? [])
+      .filter((track) => track.name.endsWith('.quaternion'))
+      .flatMap((track) => {
+        const name = track.name.slice(0, -'.quaternion'.length);
+        const motion = BONE_MOTION[name.replace(/_\d+$/, '')];
+        const bone = gltf.scene.getObjectByName(name);
+        if (!motion || !bone) return [];
+        return [{
+          bone,
+          start: new THREE.Quaternion().fromArray(track.values, 0),
+          spin: new THREE.Vector3(...motion.spin).normalize(),
+          rate: motion.rate,
+          precess: motion.precess ? new THREE.Vector3(...motion.precess).normalize() : null,
+          precessRate: motion.precessRate ?? 0,
+        }];
+      }),
+    [gltf]
+  );
+
   useFrame((state, delta) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * .25;
-      
-      // Debug log every second
-      if (Math.floor(state.clock.elapsedTime) % 2 === 0 && state.clock.elapsedTime % 1 < delta) {
-        console.log('🌍 Rotating:', groupRef.current.rotation.y.toFixed(2), 'degrees');
-      }
+      groupRef.current.rotation.y += delta * 0.1;
+      // Ease in from slightly smaller on first appearance
+      const s = THREE.MathUtils.damp(groupRef.current.scale.x, GLOBE_SCALE, 2.5, delta);
+      groupRef.current.scale.setScalar(s);
     }
+    // Each bone spins on its own axis while that axis slowly precesses;
+    // driven by elapsed time, so the motion never loops or resets
+    const t = state.clock.elapsedTime;
+    bones.forEach(({ bone, start, spin, rate, precess, precessRate }) => {
+      bone.quaternion.copy(start).multiply(tmpQuat.setFromAxisAngle(spin, rate * t));
+      if (precess) bone.quaternion.premultiply(tmpQuat.setFromAxisAngle(precess, precessRate * t));
+    });
   });
   
   return (
-    <group ref={groupRef} position={[0, 0, 0]} scale={3}>
+    <group ref={groupRef} position={[0, 0, 0]} scale={GLOBE_SCALE * 0.8}>
       <primitive object={gltf.scene} />
     </group>
   );

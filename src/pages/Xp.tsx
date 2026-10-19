@@ -1,6 +1,7 @@
 "use client";
 
 import ParticlesBackground from "@/components/ParticlesBackground";
+import PageHeader from "@/components/PageHeader";
 import { useState, memo, useRef } from "react";   
 import { useScroll, useMotionValueEvent } from "framer-motion";
 // import AnimatedLineStarter from "@/components/xp/AnimatedLineStarter";
@@ -26,6 +27,11 @@ export default function ContactPage() {
   });
 
   const lockAndSnap = () => {
+    // Skip the scroll snap for people who prefer reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setHasSnapped(true);
+      return;
+    }
     setLocked(true);
     setHasSnapped(true); // Mark that snap has occurred
 
@@ -63,13 +69,12 @@ export default function ContactPage() {
       <MemoizedParticles />
       {/* Experience section */}
       <main className="relative z-10 w-full mx-auto flex-1 flex flex-col">
-        <section className="pt-24 pb-4 text-center shrink-0 px-8"> 
-          <h3 className="text-3xl font-bold text-white mb-4">
-            Professional Experience
-          </h3>
-          <p className="text-lg text-gray-200">
-            Here are some of the roles I&apos;ve held over the last few years, hover over the cards for some fun!
-          </p>
+        <section className="pt-24 pb-4 shrink-0 px-8">
+          <PageHeader
+            path="xp"
+            title="Professional Experience"
+            subtitle="Where I've worked and what I built there. Select a card for the full story."
+          />
         </section>
         
         <div ref={sectionRef} className="h-screen w-full flex flex-1 items-center justify-center overflow-">

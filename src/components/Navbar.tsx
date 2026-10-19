@@ -12,12 +12,12 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-16 md:h-16 bg-none backdrop-blur-">
+    <nav className="fixed top-0 left-0 right-0 z-50 h-16 md:h-16 bg-linear-to-b from-night-deep/80 via-night-deep/40 to-transparent">
       <div className="max-w-full mx-auto px-6 h-full">
         <div className="flex items-center justify-between h-full">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-white hover:text-blue-400 transition-colors">
-            <span className="text-blue-400">JC&apos;s</span> Portfolio
+          <Link href="/" className="text-2xl font-semibold tracking-tight text-white hover:opacity-80 transition-opacity">
+            <span className="text-brand">JC&apos;s</span> Portfolio
           </Link>
 
           {/* Navigation Links */}

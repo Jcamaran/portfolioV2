@@ -26,9 +26,11 @@ export default function CodeWindowEffect(props: CodeWindowEffectProps) {
   const [showInstructions, setShowInstructions] = useState(false);
   const [showInputPrompt, setShowInputPrompt] = useState(false);
   const [userInput, setUserInput] = useState("");
+  const [history, setHistory] = useState<{ cmd: string; output: string }[]>([]);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const fontName = props.font || '3d';
   const speed = props.speed || 20; // milliseconds per character
@@ -46,9 +48,9 @@ export default function CodeWindowEffect(props: CodeWindowEffectProps) {
     </>
   );
   const command = " jos-init --verbose";
-  const instruction1 = "Type 'info' to learn go to the about me page.";
-  const instruction2 = "Type 'xp' to see experience.";
-  const instruction3 = "Type 'projects' to get in touch.";
+  const instruction1 = "Type 'about' to learn more about me.";
+  const instruction2 = "Type 'xp' to see my experience.";
+  const instruction3 = "Type 'projects' to browse my work.";
   const or = "Or just use the nav bar if you are feeling too lazy to type :)";
   const fullText = "" + instruction1 + "\n" + instruction2 + "\n" + instruction3 + "\n" + or;
 
@@ -282,62 +284,82 @@ export default function CodeWindowEffect(props: CodeWindowEffectProps) {
     return () => resizeObserver.disconnect();
   }, []);
 
+  // Keep the latest output in view as commands are entered
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
+  }, [history]);
+
+  // Run a command and echo its output inline, like a real shell
+  const runCommand = (raw: string) => {
+    const input = raw.toLowerCase().trim();
+    let output = '';
+
+    switch(input) {
+      case '':
+        break;
+      case 'info':
+      case 'about':
+        output = 'Opening ~/about ...';
+        router.push('/about');
+        break;
+      case 'projects':
+      case 'project':
+        output = 'Opening ~/projects ...';
+        router.push('/projects');
+        break;
+      case 'xp':
+      case 'experience':
+        output = 'Opening ~/xp ...';
+        router.push('/xp');
+        break;
+      case 'contact':
+        output = 'Contact page coming soon! Find my socials on the about page for now.';
+        break;
+      case 'help':
+        output = 'Available commands: about, xp, projects, contact, clear';
+        break;
+      case 'clear':
+        setHistory([]);
+        return;
+      default:
+        output = `command not found: ${raw.trim()}. Type 'help' for options.`;
+    }
+    setHistory((prev) => [...prev, { cmd: raw, output }]);
+  };
+
   // Handle input submit
   const handleInputSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      const input = userInput.toLowerCase().trim();
-      
-      switch(input) {
-        case 'info':
-        case 'about':
-          router.push('/about');
-          break;
-        case 'projects':
-        case 'project':
-          router.push('/projects');
-          break;
-        case 'xp':
-        case 'experience':
-          router.push('/xp');
-          break;
-        case 'contact':
-          // Add contact routing if you have a contact page
-          alert('Contact page coming soon!');
-          break;
-        case 'help':
-          alert('Available commands: info, projects, xp, contact');
-          break;
-        default:
-          alert(`Command not found: ${userInput}`);
-      }
+      runCommand(userInput);
       setUserInput('');
     }
   };
 
   // Render the code window with ASCII art
   return (
-    <div ref={containerRef} className={`rounded-2xl overflow-hidden backdrop-blur-sm bg-linear-to-br from-teal-500/10 via-purple-500/10 to-pink-500/10 border border-white/20 shadow-2xl shadow-purple-500/20 w-full h-full flex flex-col`}>
+    <div ref={containerRef} className={`relative rounded-2xl overflow-hidden backdrop-blur-xl bg-night-deep/70 border border-white/15 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7),0_0_0_1px_rgba(255,255,255,0.03)_inset] w-full h-full flex flex-col ${props.className ?? ''}`}>
       {/* Terminal Header */}
-      <div className="bg-gray-900/50 px-2 py-1.5 sm:py-2 flex items-center justify-center gap-1 sm:gap-2 border-b w-full border-white/10">
-        {/* <div className="flex gap-2">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
-        </div> */}
-       
-        
-        <span className="text-gray-400 w-full text-[10px] sm:text-xs md:text-sm ml-2 sm:ml-4 font-mono flex items-center justify-center gap-1 sm:gap-2">
-           <Image
-          src={"/mac_folder.png"}
-          width={20}
-          height={12}
-          alt="folder icon"
-          className="opacity-80 w-3 h-2 sm:w-4 sm:h-3 md:w-5 md:h-3"
-        />Joaquin -- bash -- {windowSize.width} × {windowSize.height}</span>
+      <div className="relative bg-white/[0.04] px-3 py-2 sm:py-2.5 flex items-center border-b w-full border-white/10">
+        <div className="absolute left-3 sm:left-4 flex gap-1.5 sm:gap-2" aria-hidden>
+          <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ff5f57]" />
+          <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#febc2e]" />
+          <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#28c840]" />
+        </div>
+
+        <span className="text-white/45 w-full text-[10px] sm:text-xs font-mono flex items-center justify-center gap-1 sm:gap-2">
+          <Image
+            src={"/mac_folder.png"}
+            width={20}
+            height={12}
+            alt=""
+            className="opacity-80 w-3 h-2 sm:w-4 sm:h-3"
+          />
+          Joaquin — bash — {windowSize.width} × {windowSize.height}
+        </span>
       </div>
-        
+
       {/* Code Content */}
-      <div className="p-4 max-h-60 sm:min-h-80 sm:max-h-25 font-mono text-xs sm:text-sm md:text-base overflow-x-auto flex-1 bg-black/20 h-full">
+      <div ref={scrollRef} className="p-4 sm:p-5 min-h-60 sm:min-h-80 max-h-[65vh] font-mono text-xs sm:text-sm md:text-base overflow-x-auto overflow-y-auto flex-1 h-full">
         {isLoading && (
           <div className="text-sm">
             <PromptComponent />
@@ -358,19 +380,30 @@ export default function CodeWindowEffect(props: CodeWindowEffectProps) {
               
               {/* ASCII output */}
               <div className="w-full overflow-hidden">
-                <pre className="text-emerald-400 px-0 leading-tight transition-all ease-in-out duration-100 text-[3px] sm:text-[6px] md:text-[7px] lg:text-[8px] origin-top-left" style={{ transform: 'scale(0.8)' }}>
+                <pre className="text-emerald-400 px-0 leading-tight transition-all ease-in-out duration-100 text-[2.8px] sm:text-[6px] md:text-[7px] lg:text-[8px] origin-top-left" style={{ transform: 'scale(0.8)' }}>
                   {displayedTexts[0]}
                 </pre>
               </div>
               
              {/* Instructions that appear after ASCII */}
               {showInstructions && (
-                <div className="text-white  mt-4 flex flex-col whitespace-pre-wrap text-xs sm:text-sm">
+                <div className="text-white/80 mt-4 flex flex-col whitespace-pre-wrap leading-relaxed text-xs sm:text-sm">
                   {instructionText}
                   {instructionText.length < fullText.length}
                 </div>
               )}
               
+              {/* Previous commands and their output */}
+              {history.map((entry, i) => (
+                <div key={i} className="text-xs sm:text-sm">
+                  <div className="text-amber-400">
+                    <PromptComponent />
+                    <span className="ml-1">{entry.cmd}</span>
+                  </div>
+                  {entry.output && <div className="text-white/70 mt-0.5">{entry.output}</div>}
+                </div>
+              ))}
+
               {/* Interactive input prompt */}
               {showInputPrompt && (
                 <div className="text-amber-400 mt-2 text-xs sm:text-sm flex items-center">
@@ -382,8 +415,9 @@ export default function CodeWindowEffect(props: CodeWindowEffectProps) {
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     onKeyDown={handleInputSubmit}
-                    className="bg-transparent border-none outline-none text-amber-400 ml-1 flex-1 caret-white"
-                    placeholder=""
+                    aria-label="Terminal command"
+                    className="bg-transparent border-none outline-none focus-visible:outline-none text-amber-400 ml-1 flex-1 min-w-0 caret-white placeholder:text-white/20"
+                    placeholder="try 'help'"
                     autoComplete="off"
                   />
                   

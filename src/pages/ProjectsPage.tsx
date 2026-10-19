@@ -1,5 +1,6 @@
 import ParticlesBackground from "@/components/ParticlesBackground";
 import ProjectCard from "@/components/projects/ProjectCard";
+import PageHeader from "@/components/PageHeader";
 import { memo } from "react";
 
 const MemoizedParticles = memo(ParticlesBackground);
@@ -10,7 +11,7 @@ export default function ProjectsPage() {
     {
       id: 1,
       title: "SCAA Capstone Project",
-      description: "A full-stack RAG + LMM application created for Sikorsky Aircrafts engineers to understand technical documents and obtain actionable steps towards solving their problems.",
+      description: "A full-stack RAG + LLM application created for Sikorsky Aircrafts engineers to understand technical documents and obtain actionable steps towards solving their problems.",
       image: "/SCAA_2.png",
       tech: ["LLM", "RAG","Python", "PostgreSQL", "TypeScript", "Docker", "Tailwind CSS", "FastAPI", ],
       demo: "https://www.youtube.com/watch?v=yPvSNN3zqzA"
@@ -18,7 +19,7 @@ export default function ProjectsPage() {
     
     {
       id: 2,
-      title: "RCC Predicitons Using NLP",
+      title: "RCC Predictions Using NLP",
       description: "Built an end-to-end NLP classification system in Spark to analyze operator text entries at scale. Trained and evaluated multiple multiclass models for root cause prediction, then deployed the solution via a custom Python application.",
       image: "/asml_proj.jpg",
       tech: ["Azure Databricks", "Python", "Spark", "MLflow", "Scikit-learn", "Streamlit", "CSS"],
@@ -69,12 +70,17 @@ export default function ProjectsPage() {
 
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-10">
         <section className="pt-4 md:pt-12 mb-6 md:mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 md:mb-4">
-            My Projects
-          </h1>
-          <p className="text-xs sm:text-sm md:text-sm lg:text-lg text-gray-300 mb-6 md:mb-10 w-full">
-            Here are some of my recent projects & paper contrib that showcase my skills and experience.
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6 md:mb-10">
+            <PageHeader
+              path="projects"
+              title="My Projects"
+              subtitle="Recent projects and published research that showcase my skills and experience."
+              align="left"
+            />
+            <span className="font-mono text-[11px] text-white/40 shrink-0">
+              {String(projects.length).padStart(2, "0")} entries
+            </span>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {projects.map((project, index) => (

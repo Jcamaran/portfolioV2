@@ -251,3 +251,4 @@ export default function Logo3D({
 useGLTF.preload('/models/asml_3d_logo_3-v2.glb', true);
 useGLTF.preload('/models/shu_4.glb', true);
 useGLTF.preload('/models/sikorsky.glb', true);
+useGLTF.preload('/models/petvet_full.glb', true);
