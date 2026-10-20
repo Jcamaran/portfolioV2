@@ -190,14 +190,16 @@ function AnimatedLine() {
             role="button"
             tabIndex={0}
             aria-expanded={isExpanded}
-            className="flex flex-col overflow-hidden border border-white/10 rounded-2xl md:hover:border-lilac/50 transition-colors group cursor-pointer pointer-events-auto w-full h-64 focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-4 focus-visible:outline-emerald-300"
+            className="flex flex-col overflow-hidden border border-white/10 rounded-2xl bg-origin-border bg-no-repeat md:hover:border-lilac/50 transition-colors group cursor-pointer pointer-events-auto w-full h-64 focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-4 focus-visible:outline-emerald-300"
                 style={{ 
                   boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 48px -24px rgba(0, 0, 0, 0.7), 0 0 36px -10px rgba(139, 122, 224, 0.45)',
                   transformOrigin: 'center center'
                 }}
                 animate={{
                   scale: isExpanded ? 1.02 : 1,
-                  background: isExpanded
+                  // backgroundImage (not the `background` shorthand) so the border-box origin above sticks;
+                  // otherwise the gradient tiles under the bottom border and shows a light line
+                  backgroundImage: isExpanded
                     ? 'linear-gradient(to bottom, rgba(43, 42, 76, 0.95) 0%, rgba(30, 29, 56, 0.95) 55%, rgba(23, 22, 44, 0.95) 100%)'
                     : 'linear-gradient(to bottom, rgba(168, 156, 240, 0.62) 0%, rgba(52, 50, 92, 0.9) 50%, rgba(23, 22, 44, 0.94) 100%)',
                 }}
@@ -338,46 +340,47 @@ function AnimatedLine() {
                       <p className="font-mono text-[11px] uppercase tracking-wider text-lilac/80 mt-0.5 mb-1.5 sm:mb-2">
                         {exp.company}
                       </p>
-                      <p className={`text-sm leading-relaxed text-white/70 ${isExpanded ? 'line-clamp-6' : 'line-clamp-3'}`}>
+                      <p className={`text-sm leading-normal text-white/70 ${isExpanded ? 'line-clamp-6' : 'line-clamp-3'}`}>
                         {exp.description}
                       </p>
                     </motion.div>
                     
-                    {/* Employment type tag - bottom left */}
-                    <motion.div
-                      className={`absolute -bottom-9 left-7 px-4 py-1.5 rounded-full backdrop-blur-sm border border-white/10 shadow-xl ${exp.type === 'Full-time' ? 'bg-emerald-500/70' : 'bg-violet-brand/70'}`}
-                      initial={{ opacity: 0, y: 10, scale: 0.8 }}
-                      animate={{
-                        opacity: isExpanded ? 1 : 0,
-                        y: isExpanded ? 0 : 10,
-                        scale: isExpanded ? 1 : 0.8,
-                      }}
-                      transition={{
-                        duration: 0.4,
-                        delay: isExpanded ? 0.3 : 0,
-                        ease: [0.22, 1, 0.36, 1],
-                      }}
-                      style={{ pointerEvents: 'none' }}
-                    >
-                      <span className="text-xs font-semibold text-white tracking-wide uppercase flex items-center gap-1.5">
-                        <svg 
-                          className="w-3 h-3" 
-                          fill="none" 
-                          stroke="currentColor" 
-                          viewBox="0 0 24 24"
-                          aria-hidden
-                        >
-                          <path 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round" 
-                            strokeWidth={2} 
-                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" 
-                          />
-                        </svg>
-                        {exp.type}
-                      </span>
-                    </motion.div>
                   </div>
+
+                  {/* Employment type tag - bottom left, level with the expand toggle */}
+                  <motion.div
+                    className={`absolute bottom-2 left-3 sm:left-4 z-20 px-2.5 py-1 rounded-full backdrop-blur-sm border border-white/15 shadow-lg ${exp.type === 'Full-time' ? 'bg-emerald-500/70' : 'bg-violet-brand/70'}`}
+                    initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                    animate={{
+                      opacity: isExpanded ? 1 : 0,
+                      y: isExpanded ? 0 : 10,
+                      scale: isExpanded ? 1 : 0.8,
+                    }}
+                    transition={{
+                      duration: 0.4,
+                      delay: isExpanded ? 0.3 : 0,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    style={{ pointerEvents: 'none' }}
+                  >
+                    <span className="font-mono text-[11px] text-white tracking-wider uppercase flex items-center gap-1.5">
+                      <svg 
+                        className="w-3 h-3" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                        aria-hidden
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth={2} 
+                          d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" 
+                        />
+                      </svg>
+                      {exp.type}
+                    </span>
+                  </motion.div>
 
                   {/* Expand affordance - bottom right */}
                   <span className="absolute bottom-2.5 right-3 z-20 flex items-center gap-1 font-mono text-[11px] uppercase tracking-wider text-white/50 group-hover:text-lilac transition-colors duration-200 pointer-events-none">
